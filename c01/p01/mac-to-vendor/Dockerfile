@@ -1,11 +1,8 @@
-
-
 FROM alpine
 
 LABEL mantainer="cloud@um.edu.ar"
 
 ENV TERM xterm
-
 
 RUN apk update
 RUN apk add python py2-pip uwsgi uwsgi-python
@@ -15,9 +12,7 @@ WORKDIR /opt/umcloud/ip-mac
 COPY src/* /opt/umcloud/ip-mac/
 RUN pip install -r requirements.txt
 
-RUN addgroup -g 1000 -S umcloud && adduser -u 1000 -S umcloud -G umcloud
-RUN chown -R umcloud:umcloud /opt/*
-USER umcloud
+USER 1000:1000
 CMD uwsgi --ini /opt/umcloud/ip-mac/app.ini
 
 EXPOSE 8000
