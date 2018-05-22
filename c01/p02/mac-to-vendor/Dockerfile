@@ -5,6 +5,7 @@ FROM alpine
 LABEL mantainer="cloud@um.edu.ar"
 
 ENV TERM xterm
+ENV APP_KEY default_default
 
 
 RUN apk update

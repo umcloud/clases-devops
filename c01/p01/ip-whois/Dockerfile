@@ -1,8 +1,6 @@
-
-
 FROM alpine
 
-MAINTAINER UMCloud <cloud@um.edu.ar>
+LABEL mantainer="cloud@um.edu.ar"
 
 ENV TERM xterm
 
