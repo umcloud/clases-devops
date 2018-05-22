@@ -85,23 +85,33 @@ def build_response_msg(endpoint=None, options={}):
 
 #API ENDPOINT
 
-app = Flask(__name__)
+@app.route('/', methods=['GET'])
+def get_root():
+    options = {
+        'status_code': 200
+    }
+    options['body'] = { 'mac': 'Hello! Authenticate && Give me a mac address' }
+    return build_response_msg(options=options)
+
 
 @app.route('/<mac>', methods=['GET'])
 def get_mac(mac):
     options = {
         'status_code': 200
     }
-    search = re.sub(":","-",mac)
-    search = search[:8]
-    search = search.upper() 
-    vendor = Mac()
-    mac_vendor = vendor.vendor(search)
-    if mac_vendor:
-        options['body'] = { 'mac': mac, 'vendor': mac_vendor }
-    else:
-        options['status_code']= 404
-
+    if mac:
+        try:
+            search = re.sub(":","-",mac)
+            search = search[:8]
+            search = search.upper()
+            vendor = Mac()
+            mac_vendor = vendor.vendor(search)
+            if mac_vendor:
+                options['body'] = { 'mac': mac, 'vendor': mac_vendor }
+            else:
+                options['status_code']= 404
+        except:
+                options['status_code']= 404
     return build_response_msg(options=options)
 
 if __name__ == '__main__':

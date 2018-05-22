@@ -93,18 +93,28 @@ def whois(input_ip,depth=1):
 
 #API ENDPOINTS
 
+@app.route('/', methods=['GET'])
+def get_root():
+    options = {
+        'status_code': 200
+    }
+    options['body'] = { 'whois': 'Hello! Authenticate && Give me an IP' }
+    return build_response_msg(options=options)
+
 @app.route('/<ip_address>', methods=['GET'])
 @requires_auth
 def get_whois(ip_address):
     options = {
         'status_code': 200
     }
-    
-    who = whois(ip_address)
-    if who:
-        options['body'] = { 'whois': who }
+    if ip_address:
+        who = whois(ip_address)
+        if who:
+            options['body'] = { 'whois': who }
+        else:
+            options['status_code']= 404
     else:
-        options['status_code']= 404
+        options['status_code'] = 404
 
     return build_response_msg(options=options)
 
