@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: web
+  name: web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: web
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: web
+    spec:
+      containers:
+      - image: bitnami/nginx:1.14.0
+        name: web
+        resources: {}
+status: {}

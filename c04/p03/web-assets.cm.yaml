@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  index.html: |
+    hola mundo desde jjo
+  saludo: |
+    hola
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: web-assets

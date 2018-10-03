@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: db-prod
+  labels:
+    run: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: db
+  template:
+    metadata:
+      generateName: db-prod
+      labels:
+        run: db
+        version: v0.1
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: db-prod
+          image: mysql
+          imagePullPolicy: Always
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: db-password
+          ports:
+            - name: db-mysql
+              containerPort: 3306
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: db-secret
