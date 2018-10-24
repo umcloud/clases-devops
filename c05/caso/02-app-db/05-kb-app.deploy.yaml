@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kb-prod
+  labels:
+    run: kb-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: kb-prod
+  template:
+    metadata:
+      generateName: kb-prod
+      labels:
+        run: kb-prod
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: kb-prod
+          image: kanboard/kanboard:v1.2.5
+          imagePullPolicy: Always
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: kb-app-secret
+                  key: database-url
+          ports:
+            - name: kb-prod
+              containerPort: 80
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: kb-app-secret

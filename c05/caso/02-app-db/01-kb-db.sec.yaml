@@ -1,8 +1,7 @@
 apiVersion: v1
 data:
-  db-name: d2hvaXM=
-  db-password: c2VjcmV0aXNpbW8=
-  db-username: cm9vdA==
+  db-name: a2FuYm9hcmQ=
+  db-password: dGFibGVybw==
 kind: Secret
 metadata:
   creationTimestamp: null
