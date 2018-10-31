@@ -72,7 +72,7 @@ spec:
        name: mysql-data
      spec:
        accessModes: [ "ReadWriteOnce" ]
-       storageClassName: "openebs-standalone"
+       #storageClassName: "openebs-standalone"
        resources:
          requests:
            storage: 1Gi

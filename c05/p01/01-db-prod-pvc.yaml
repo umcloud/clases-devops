@@ -2,8 +2,8 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: mysql-data
-  annotations:
-    volume.beta.kubernetes.io/storage-class: openebs-standalone
+#  annotations:
+#    volume.beta.kubernetes.io/storage-class: openebs-standalone
 spec:
   accessModes:
     - ReadWriteOnce
