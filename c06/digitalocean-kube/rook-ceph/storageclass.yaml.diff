@@ -1,0 +1,8 @@
+--- storageclass.yaml.1	2018-11-07 14:35:11.158800462 -0300
++++ storageclass.yaml	2018-11-07 14:35:44.559294540 -0300
+@@ -20,3 +20,5 @@
+   clusterNamespace: rook-ceph
+   # Specify the filesystem type of the volume. If not specified, it will use `ext4`.
+   fstype: xfs
++# Optional, default reclaimPolicy is "Delete". Other options are: "Retain", "Recycle" as documented in https://kubernetes.io/docs/concepts/storage/storage-classes/ 
++reclaimPolicy: Delete
