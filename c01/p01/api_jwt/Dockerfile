@@ -3,7 +3,7 @@ FROM golang:1.12-alpine3.9 AS builder
 ADD ./ /go/src/api_jwt/
 
 RUN set -ex && \
-  cd /go/src/api_jwt && \       
+  cd /go/src/api_jwt && \
   CGO_ENABLED=0 go build \
         -tags netgo \
         -v -a \

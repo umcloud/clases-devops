@@ -1,0 +1,68 @@
+version: '3'
+
+# See .env for automatic env-vars
+
+services:
+  init:
+    image: alpine
+    volumes:
+      - .:/app
+      - db-data:${DBDIR}
+      - cache:/var/cache/apk
+    working_dir: /
+    command:
+      - sh
+      - -c
+      - |
+        if ! test -f ${DBPATH}; then
+          apk update
+          apk add sqlite
+          sqlite3 ${DBPATH} < /app/users.sql
+          chown 1001 ${DBPATH}
+        fi
+        # Keep this container alive for debugging purposes
+        sleep 1d
+  main:
+    depends_on:
+    - init
+    image: api_jwt
+    user: "1001"
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - db-data:${DBDIR}
+    working_dir: ${DBDIR}
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        until test -f ${DBPATH}; do echo "Waiting for DB to be created"; sleep 1; done
+        exec /opt/api_jwt/bin/api_jwt -p ${PORT} -db ${DBPATH}
+  test:
+    depends_on:
+    - main
+    image: alpine
+    volumes:
+      - cache:/var/cache/apk
+    command:
+      - sh
+      - -c
+      - |
+        apk update
+        apk add curl
+        until curl -so/dev/null http://localhost:${PORT}; do echo "Waiting for main service to be ready"; sleep 1; done
+        JWT=$$(curl -sv http://testuser:supersecret@localhost:${PORT}/auth | sed -nr '/JWT/s/.*: //p')
+        echo "JWT: $$JWT"
+        set -x
+        curl -H "Authorization: BEARER $$JWT" -sv http://localhost:${PORT}/admin
+    network_mode: "host"
+
+volumes:
+  db-data:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+  cache:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
