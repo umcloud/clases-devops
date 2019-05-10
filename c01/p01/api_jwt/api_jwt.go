@@ -1,12 +1,14 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/base64"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/jwtauth"
+	_ "github.com/mattn/go-sqlite3"
 	"net/http"
 	"strings"
 	"time"
@@ -19,6 +21,7 @@ var dbpathPtr *string
 func init() {
 	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
 	portPtr = flag.String("p", "3001", "Port to listen")
+	dbpathPtr = flag.String("db", "./users.db", "path to the users sqlite database")
 	flag.Parse()
 }
 
@@ -87,10 +90,12 @@ func router() http.Handler {
 //Users validation
 func validate(username, password string) bool {
 	var out bool
-	if username == "testuser" && password == "supersecret" {
-		out = true
-	} else {
+	database, _ := sql.Open("sqlite3", *dbpathPtr)
+	err := database.QueryRow("select username, password from users where username LIKE ? and password LIKE ?", username, password).Scan(&username)
+	if err != nil && err == sql.ErrNoRows {
 		out = false
+	} else {
+		out = true
 	}
 	return out
 }
