@@ -1,17 +1,19 @@
-FROM golang:1.11.0-alpine as build
+FROM golang:1.12-alpine3.9 AS builder
 
-ARG SRC_REPO=github.com/c0r0nel/api_jwt
-ARG SRC_TAG=master
-ARG ARCH=amd64
-RUN apk update && apk add --no-cache build-base sqlite
+ADD ./ /go/src/api_jwt/
 
-COPY . /go/src/${SRC_REPO}
-RUN GOARCH=${ARCH} go get ${SRC_REPO}
-RUN find /go/bin -name api_jwt -type f | xargs -I@ install @ /
+RUN set -ex && \
+  cd /go/src/api_jwt && \
+  CGO_ENABLED=0 go build \
+        -tags netgo \
+        -v -a \
+        -ldflags '-extldflags "-static"' && \
+  mv ./api_jwt /usr/bin/api_jwt
 
-FROM alpine:3.7
+FROM alpine:3.9
 
-USER 1001
-COPY --from=build /api_jwt /opt/api_jwt/bin/api_jwt
+# Retrieve the binary from the previous stage
+COPY --from=builder /usr/bin/api_jwt /opt/api_jwt/bin/api_jwt
 
+# Set the binary as the entrypoint of the container
 ENTRYPOINT [ "/opt/api_jwt/bin/api_jwt" ]
