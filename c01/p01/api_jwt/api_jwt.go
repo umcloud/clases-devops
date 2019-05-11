@@ -74,7 +74,7 @@ func router() http.Handler {
 			payload, _ := base64.StdEncoding.DecodeString(auth[1])
 			pair := strings.SplitN(string(payload), ":", 2)
 
-			if len(pair) != 2 || !validate(pair[0], pair[1]) {
+			if !validate(pair[0], pair[1]) {
 				http.Error(w, "Authorization falied: invalid credentials\n", http.StatusUnauthorized)
 			} else {
 				//The JWT will have 180secs of lifetime
@@ -90,12 +90,15 @@ func router() http.Handler {
 //Users validation
 func validate(username, password string) bool {
 	var out bool
+	out = false
 	database, _ := sql.Open("sqlite3", *dbpathPtr)
-	err := database.QueryRow("select username, password from users where username LIKE ? and password LIKE ?", username, password).Scan(&username)
-	if err != nil && err == sql.ErrNoRows {
-		out = false
-	} else {
-		out = true
+	err := database.QueryRow("select username, password from users where username LIKE $1 and password LIKE $2", username, password).Scan(&username)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			out = false
+		} else {
+			out = true
+		}
 	}
 	return out
 }

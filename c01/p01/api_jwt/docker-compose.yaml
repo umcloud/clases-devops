@@ -14,12 +14,10 @@ services:
       - sh
       - -c
       - |
-        if ! test -f ${DBPATH}; then
-          apk update
-          apk add sqlite
-          sqlite3 ${DBPATH} < /app/users.sql
-          chown 1001 ${DBPATH}
-        fi
+        apk update
+        apk add sqlite
+        sqlite3 ${DBPATH} < /app/users.sql
+        chown 1001 ${DBPATH}
         # Keep this container alive for debugging purposes
         sleep 1d
   main:
