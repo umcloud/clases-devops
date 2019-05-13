@@ -2,10 +2,9 @@ FROM golang:1.12-alpine3.9 AS builder
 
 COPY . /go/src/api_jwt/
 
-RUN apk update && apk add --no-cache build-base
 RUN set -ex && \
   cd /go/src/api_jwt && \
-      go build ./api_jwt.go && \
+      CGO_ENABLED=0 go build ./api_jwt.go && \
   mv ./api_jwt /usr/bin/api_jwt
 
 FROM alpine:3.9
