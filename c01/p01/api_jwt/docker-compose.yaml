@@ -26,7 +26,7 @@ services:
     image: api_jwt
     user: "1001"
     ports:
-      - ${PORT}:${PORT}
+      - ${API_PORT}:3001
     volumes:
       - db-data:${DBDIR}
     working_dir: ${DBDIR}
@@ -35,7 +35,7 @@ services:
       - -c
       - |
         until test -f ${DBPATH}; do echo "Waiting for DB to be created"; sleep 1; done
-        exec /opt/api_jwt/bin/api_jwt -p ${PORT} -db ${DBPATH}
+        exec /opt/api_jwt/bin/api_jwt -db ${DBPATH}
   test:
     depends_on:
     - main
@@ -48,11 +48,11 @@ services:
       - |
         apk update
         apk add curl
-        until curl -so/dev/null http://localhost:${PORT}; do echo "Waiting for main service to be ready"; sleep 1; done
-        JWT=$$(curl -sv http://testuser:supersecret@localhost:${PORT}/auth | sed -nr '/JWT/s/.*: //p')
+        until curl -so/dev/null http://localhost:${API_PORT}; do echo "Waiting for main service to be ready"; sleep 1; done
+        JWT=$$(curl -sv http://testuser:supersecret@localhost:${API_PORT}/auth | sed -nr '/JWT/s/.*: //p')
         echo "JWT: $$JWT"
         set -x
-        curl -H "Authorization: BEARER $$JWT" -sv http://localhost:${PORT}/admin
+        curl -H "Authorization: BEARER $$JWT" -sv http://localhost:${API_PORT}/admin
     network_mode: "host"
 
 volumes:
