@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/jwtauth"
 	_ "github.com/mattn/go-sqlite3"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 )
@@ -20,7 +21,11 @@ var dbpathPtr *string
 
 func init() {
 	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
-	portPtr = flag.String("p", "3001", "Port to listen")
+	defPort, ok := os.LookupEnv("DEFAULT_PORT")
+	if !ok {
+		defPort = "3001"
+	}
+	portPtr = flag.String("p", defPort, "Port to listen")
 	dbpathPtr = flag.String("db", "./users.db", "path to the users sqlite database")
 	flag.Parse()
 }
