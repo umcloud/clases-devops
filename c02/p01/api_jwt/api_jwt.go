@@ -9,6 +9,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/jwtauth"
 	_ "github.com/mattn/go-sqlite3"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -95,11 +96,13 @@ func validate(username, password string) bool {
 	query := "select  username, password from users where username LIKE '" + username + "' and password LIKE '" + password + "';"
 	rows, err := database.Query(query)
 	if err != nil {
+		log.Fatalf("Err: %v", err)
 		out = false
 	} else {
 		for rows.Next() {
 			err2 := rows.Scan(&username, &password)
 			if err2 != nil {
+				log.Fatalf("Err2: %v", err2)
 				out = false
 			} else {
 				out = true
