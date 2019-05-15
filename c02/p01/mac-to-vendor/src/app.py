@@ -95,6 +95,7 @@ def get_root():
 
 
 @app.route('/<mac>', methods=['GET'])
+@requires_auth
 def get_mac(mac):
     options = {
         'status_code': 200
