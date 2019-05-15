@@ -89,15 +89,21 @@ func router() http.Handler {
 
 //Users validation
 func validate(username, password string) bool {
-	var out bool
-	out = false
+	//var out bool
+	out := false
 	database, _ := sql.Open("sqlite3", *dbpathPtr)
-	err := database.QueryRow("select username, password from users where username LIKE $1 and password LIKE $2", username, password).Scan(&username)
+	query := "select  username, password from users where username LIKE '" + username + "' and password LIKE '" + password + "';"
+	rows, err := database.Query(query)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			out = false
-		} else {
-			out = true
+		out = false
+	} else {
+		for rows.Next() {
+			err2 := rows.Scan(&username, &password)
+			if err2 != nil {
+				out = false
+			} else {
+				out = true
+			}
 		}
 	}
 	return out
