@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
@@ -6,7 +6,7 @@ metadata:
     run: web
   name: web
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       run: web
@@ -18,7 +18,7 @@ spec:
         run: web
     spec:
       containers:
-      - image: bitnami/nginx:1.12
+      - image: bitnami/nginx:1.12.2
         name: web
         resources: {}
 status: {}
