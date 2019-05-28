@@ -39,9 +39,9 @@ spec:
             - name: db-mysql
               containerPort: 3306
       volumes:
-        - name: sql-volume
-          secret:
-            secretName: db-sql
-        - name: secret-volume
-          secret:
-            secretName: db-secret
+      - configMap:
+          name: db-sql
+        name: sql-volume
+      - name: secret-volume
+        secret:
+          secretName: db-secret
