@@ -1,7 +1,0 @@
-apiVersion: v1
-data:
-  database-url: bXlzcWw6Ly9yb290OnRhYmxlcm9AZGItcHJvZDozMzA2L2thbmJvYXJk
-kind: Secret
-metadata:
-  creationTimestamp: null
-  name: kb-app-secret
