@@ -22,6 +22,8 @@ enable_nodelocaldns: false
 upstream_dns_servers:
   - 8.8.8.8
   - 8.8.4.4
+#Needed for rook-ceph
+kubelet_flexvolumes_plugins_dir: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
 EOF
 
 cd kubespray
