@@ -4,4 +4,4 @@ itsdangerous==0.24
 Jinja2==2.8
 MarkupSafe==0.23
 Werkzeug==0.11.11
-Flask-Cors==3.0.2
+Flask-Cors==3.0.9
