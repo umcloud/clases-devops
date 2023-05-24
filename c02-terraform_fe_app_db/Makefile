@@ -5,8 +5,11 @@ help:
 	@echo make output
 	@echo make destroy
 
-init plan apply destroy output fmt: check-env
+init plan output fmt: check-env
 	terraform $@
+
+apply destroy: check-env
+	terraform $@ --auto-approve
 
 check-env:
 	@grep REEMPLAZAR variables.tf >/dev/null || exit 0; echo "ERROR: editar variables.tf para REEMPLAZAR por el nombre de tu keypair"; exit 1
