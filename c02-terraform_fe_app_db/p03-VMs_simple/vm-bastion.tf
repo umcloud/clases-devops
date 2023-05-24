@@ -13,7 +13,6 @@ resource "openstack_compute_instance_v2" "my_bastion" {
   depends_on = [
     openstack_networking_subnet_v2.my_subnet,
   ]
-
 }
 
 resource "openstack_compute_floatingip_associate_v2" "my_bastion_fip" {
