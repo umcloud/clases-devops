@@ -9,6 +9,12 @@ resource "openstack_compute_instance_v2" "my_bastion" {
   network {
     name = openstack_networking_network_v2.my_net.name
   }
+
+  depends_on = [
+    openstack_networking_subnet_v2.my_subnet,
+    openstack_compute_secgroup_v2.sg_bastion,
+  ]
+
 }
 
 resource "openstack_compute_floatingip_associate_v2" "my_bastion_fip" {

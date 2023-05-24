@@ -2,9 +2,10 @@ help:
 	@echo make init
 	@echo make plan
 	@echo make apply
+	@echo make output
 	@echo make destroy
 
-init plan apply destroy fmt: check-env
+init plan apply destroy output fmt: check-env
 	terraform $@
 
 check-env:
