@@ -1,11 +1,3 @@
-data "template_file" "my_app_init" {
-  template = file("${path.module}/templates/vm-app.init.sh")
-  vars = {
-    db_ip = openstack_compute_instance_v2.my_db.network.0.fixed_ip_v4
-    fe_fip = openstack_networking_floatingip_v2.my_fe_fip.address
-  }
-}
-
 resource "openstack_compute_instance_v2" "my_app" {
   name              = "my-app"
   image_id          = data.openstack_images_image_v2.srv_wordpress_ubuntu1804.id
@@ -13,8 +5,6 @@ resource "openstack_compute_instance_v2" "my_app" {
   key_pair          = var.key_name // EDIT: variables.tf
   security_groups   = ["sg_app"]
   availability_zone = "nodos-amd-2022"
-
-  user_data = data.template_file.my_app_init.rendered
 
   network {
     name = openstack_networking_network_v2.my_net.name

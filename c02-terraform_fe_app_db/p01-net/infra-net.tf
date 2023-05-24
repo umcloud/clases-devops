@@ -23,13 +23,3 @@ resource "openstack_networking_router_interface_v2" "my_router_iface_internal" {
   router_id = openstack_networking_router_v2.my_router.id
   subnet_id = openstack_networking_subnet_v2.my_subnet.id
 }
-
-resource "openstack_networking_floatingip_v2" "my_bastion_fip" {
-  description = "my-bastion-ip"
-  pool        = "ext_net"
-}
-
-resource "openstack_networking_floatingip_v2" "my_fe_fip" {
-  description = "my-fe-ip"
-  pool        = "ext_net"
-}

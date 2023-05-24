@@ -1,3 +1,5 @@
+export TF_DATA_DIR=../tf-data
+
 help:
 	@echo make init
 	@echo make plan
@@ -5,14 +7,17 @@ help:
 	@echo make output
 	@echo make destroy
 
-init plan output fmt: check-env
+init plan output apply destroy fmt: check-env
 	terraform $@
 
-apply destroy: check-env
-	terraform $@ --auto-approve
+apply-auto: check-env
+	terraform apply --auto-approve
+
+destroy-auto: check-env
+	terraform destroy --auto-approve
 
 check-env:
-	@grep REEMPLAZAR variables.tf >/dev/null || exit 0; echo "ERROR: editar variables.tf para REEMPLAZAR por el nombre de tu keypair"; exit 1
+	@grep REEMPLAZAR variables.tf >/dev/null 2>&1 || exit 0; echo "ERROR: editar variables.tf para REEMPLAZAR por el nombre de tu keypair"; exit 1
 	@which terraform > /dev/null && exit 0; echo "ERROR: Please install terraform binary"; exit 1
 	@echo $${OS_AUTH_URL:?"ERROR: Need to load openstack environment with: source USERNAME_project-openrc.sh"} > /dev/null
 
