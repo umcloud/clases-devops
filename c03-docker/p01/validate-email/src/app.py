@@ -1,26 +1,22 @@
 #!/usr/bin/env python
-from mac_to_vendor import Mac
 from flask import Flask, jsonify, Response, request
 from flask_cors import CORS, cross_origin
 from functools import wraps
-import collections
+from validate_email import validate_email
 import re
 import json
-import ConfigParser
+import base64
+import datetime
+import sys
+import os
 
 #App
 app = Flask(__name__)
 CORS(app)
 
 
-#General config
-config = ConfigParser.ConfigParser()
-config.read('mac_to_vendor.conf')
-
-
 #Autentication
 def check_auth(username, password):
-    #echo "umcloud"|md5sum
     if username == "56ca8f8738ecc03cc4b2859db342e243":
         return 1
     else:
@@ -31,7 +27,7 @@ def authenticate():
     resp = jsonify(message)
 
     resp.status_code = 401
-    resp.headers['WWW-Authenticate'] = 'Basic realm="shaas-recovery"'
+    resp.headers['WWW-Authenticate'] = 'Basic realm="shaas-jobs"'
 
     return resp
 
@@ -83,37 +79,46 @@ def build_response_msg(endpoint=None, options={}):
 
     return response
 
-#API ENDPOINT
+def verify_email(email, mode=0):
+    """
+    Use 3rd party library to check whether e-mail is valid.
+    Mode can be 0, 1, or 2
+    0: Validate if e-mail is valid
+    1: Validate if e-mail is valid and domain has SMTP Server
+    2: Validate if e-mail is valid, domain has SMTP Server and emails actually exists
+    """
 
-@app.route('/', methods=['GET'])
-def get_root():
-    options = {
-        'status_code': 200
-    }
-    options['body'] = { 'mac': 'Hello! Authenticate && Give me a mac address' }
-    return build_response_msg(options=options)
+    email = str(email)
+    mode = int(mode)
+
+    if mode not in [0, 1, 2]:
+        mode = 2
+    try:
+        is_valid = False
+        if mode == 0:
+            is_valid = validate_email(email)
+        elif mode == 1:
+            is_valid = validate_email(email, check_mx=True, smtp_timeout=3)
+        else:
+            is_valid = validate_email(email, verify=True, smtp_timeout=3)
+    except UnicodeEncodeError:
+        is_valid = False
+    except Exception:
+        is_valid = True
+
+    return True if is_valid else False
 
 
-@app.route('/<mac>', methods=['GET'])
+@app.route('/<email>/<mode>', methods=['GET'])
 @requires_auth
-def get_mac(mac):
+def validate(email,mode):
     options = {
+        'body': None,
         'status_code': 200
     }
-    if mac:
-        try:
-            search = re.sub(":","-",mac)
-            search = search[:8]
-            search = search.upper()
-            vendor = Mac()
-            mac_vendor = vendor.vendor(search)
-            if mac_vendor:
-                options['body'] = { 'mac': mac, 'vendor': mac_vendor }
-            else:
-                options['status_code']= 404
-        except:
-                options['status_code']= 404
-    return build_response_msg(options=options)
+    print(email, mode)
+    options['body'] = verify_email(email, mode)
+    return build_response_msg("validate", options = options)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,host='0.0.0.0')
