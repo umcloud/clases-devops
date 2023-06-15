@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-simple
+  labels:
+    app: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      generateName: db-simple
+      labels:
+        app: db
+        version: v0.1
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: db-simple
+          image: mysql
+          imagePullPolicy: Always
+          ports:
+            - name: db-mysql
+              containerPort: 3306

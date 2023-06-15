@@ -1,0 +1,19 @@
+apiVersion: v1
+data:
+  schema.sql: |
+    USE whois;
+    DROP TABLE IF EXISTS `whois`;
+    CREATE TABLE `whois` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `asn` varchar(45) DEFAULT NULL,
+      `cidr` varchar(45) DEFAULT NULL,
+      `whois` json DEFAULT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=563 DEFAULT CHARSET=utf8;
+
+    LOCK TABLES `whois` WRITE;
+    /*!40000 ALTER TABLE `whois` DISABLE KEYS */;
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: db-sql

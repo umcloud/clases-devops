@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: web
+  name: web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: web
+    spec:
+      containers:
+      - image: bitnami/nginx:1.24.0
+        name: nginx
+        resources: {}
+        volumeMounts:
+        - mountPath: /opt/bitnami/nginx/html
+          name: assets-vol
+      volumes:
+      - configMap:
+          name: web-assets
+        name: assets-vol
+status: {}

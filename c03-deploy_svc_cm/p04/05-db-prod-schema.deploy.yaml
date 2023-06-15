@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-prod-schema
+  labels:
+    app: db-prod-schema
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-prod-schema
+  template:
+    metadata:
+      generateName: db-prod-schema
+      labels:
+        app: db-prod-schema
+        version: v0.1
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: db-prod-schema
+          image: mysql
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: sql-volume
+            mountPath: "/docker-entrypoint-initdb.d/"
+          env:
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: db-name
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: db-password
+          ports:
+            - name: db-mysql
+              containerPort: 3306
+      volumes:
+      - configMap:
+          name: db-sql
+        name: sql-volume
+      - name: secret-volume
+        secret:
+          secretName: db-secret

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-prod
+  labels:
+    app: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      generateName: db-prod
+      labels:
+        app: db
+        version: v0.1
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: db-prod
+          image: mysql
+          imagePullPolicy: Always
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: db-password
+          ports:
+            - name: db-mysql
+              containerPort: 3306
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: db-secret
