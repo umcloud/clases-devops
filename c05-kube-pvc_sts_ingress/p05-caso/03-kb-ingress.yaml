@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: nginx
+  name: kb-ing
+spec:
+  rules:
+  - host: dnavarro-kb.my.kube.um.edu.ar
+    http:
+      paths:
+      - backend:
+          service:
+            name: kb-prod
+            port:
+              number: 80
+        path: /
+        pathType: Prefix

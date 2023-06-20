@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kb-prod
+  labels:
+    run: kb-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: kb-prod
+  template:
+    metadata:
+      generateName: kb-prod
+      labels:
+        run: kb-prod
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: kb-prod
+          image: kanboard/kanboard:v1.2.9
+          imagePullPolicy: Always
+          ports:
+            - name: kb-prod
+              containerPort: 80
