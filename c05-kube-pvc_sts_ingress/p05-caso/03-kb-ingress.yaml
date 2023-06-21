@@ -7,7 +7,7 @@ metadata:
   name: kb-ing
 spec:
   rules:
-  - host: dnavarro-kb.my.kube.um.edu.ar
+  - host: USER-kb.my.kube.um.edu.ar
     http:
       paths:
       - backend:
