@@ -8,16 +8,16 @@ help:
 	@echo make destroy
 
 init plan output apply destroy fmt: check-env
-	terraform $@
+	tofu $@
 
 apply-auto: check-env
-	terraform apply --auto-approve
+	tofu apply --auto-approve
 
 destroy-auto: check-env
-	terraform destroy --auto-approve
+	tofu destroy --auto-approve
 
 check-env:
 	@grep REEMPLAZAR variables.tf >/dev/null 2>&1 || exit 0; echo "ERROR: editar variables.tf para REEMPLAZAR por el nombre de tu keypair"; exit 1
-	@which terraform > /dev/null && exit 0; echo "ERROR: Please install terraform binary"; exit 1
+	@which tofu > /dev/null && exit 0; echo "ERROR: Please install tofu binary (opentofu.org)"; exit 1
 	@echo $${OS_AUTH_URL:?"ERROR: Need to load openstack environment with: source USERNAME_project-openrc.sh"} > /dev/null
 

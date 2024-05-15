@@ -4,8 +4,8 @@ terraform {
       source = "terraform-provider-openstack/openstack"
     }
   }
-  required_version = ">= 0.13"
   backend "local" {
     path = "../tf-state/terraform.tfstate"
   }
+  required_version = ">= 1.5"
 }
