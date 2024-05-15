@@ -18,8 +18,8 @@ EOF
 sudo a2ensite wordpress && sudo a2enmod rewrite
 sudo service apache2 restart
 
-my_ip=$(ip r get 1.1.1.1 | sed -rn 's/.*src (\S+) .*/\1/p')
-sudo tee "/etc/wordpress/config-$my_ip.php" << EOF
+tf_ip=$(ip r get 1.1.1.1 | sed -rn 's/.*src (\S+) .*/\1/p')
+sudo tee "/etc/wordpress/config-$tf_ip.php" << EOF
 <?php
 define('DB_NAME', 'wordpress');
 define('DB_USER', 'wordpress');
