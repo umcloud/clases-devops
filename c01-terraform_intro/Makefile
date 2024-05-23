@@ -5,9 +5,9 @@ help:
 	@echo make destroy
 
 init plan apply destroy fmt: check-env
-	terraform $@
+	tofu $@
 
 check-env:
-	@which terraform > /dev/null && exit 0; echo "ERROR: Please install terraform binary"; exit 1
+	@which tofu > /dev/null && exit 0; echo "ERROR: Please install tofu binary"; exit 1
 	@echo $${OS_AUTH_URL:?"ERROR: Need to load openstack environment with: source USERNAME_project-openrc.sh"} > /dev/null
 
