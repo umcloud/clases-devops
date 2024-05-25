@@ -1,9 +1,3 @@
-data "template_file" "tf_fe_init" {
-  template = file("${path.module}/templates/vm-fe.init.sh")
-  vars = {
-    app_ip = openstack_compute_instance_v2.tf_app.network.0.fixed_ip_v4
-  }
-}
 resource "openstack_compute_instance_v2" "tf_fe" {
   name              = "tf-fe"
   image_id          = data.openstack_images_image_v2.srv_nginx_ubuntu1804.id
@@ -12,7 +6,9 @@ resource "openstack_compute_instance_v2" "tf_fe" {
   security_groups   = [openstack_compute_secgroup_v2.tf_sg_fe.name]
   availability_zone = "nodos-amd-2022"
 
-  user_data = data.template_file.tf_fe_init.rendered
+  user_data = templatefile("${path.module}/templates/vm-fe.init.sh", {
+    app_ip = openstack_compute_instance_v2.tf_app.network.0.fixed_ip_v4
+  })
 
   network {
     name = openstack_networking_network_v2.tf_net.name
