@@ -1,4 +1,4 @@
-data "openstack_images_image_v2" "docker" {
+data "openstack_images_image_v2" "kube_tools" {
   name        = "um-kube-tools"
   most_recent = true
 }
@@ -8,9 +8,9 @@ data "openstack_compute_flavor_v2" "small" {
   ram   = 2048
 }
 
-resource "openstack_compute_instance_v2" "docker_vm" {
+resource "openstack_compute_instance_v2" "kube_vm" {
   name              = "kube_vm"
-  image_id          = data.openstack_images_image_v2.docker.id
+  image_id          = data.openstack_images_image_v2.kube_tools.id
   flavor_id         = data.openstack_compute_flavor_v2.small.id
   key_pair          = var.key_name
   security_groups   = ["default"]
