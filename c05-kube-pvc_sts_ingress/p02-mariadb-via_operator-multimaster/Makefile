@@ -10,10 +10,13 @@ apply:
 	kubectl apply -f mariadb-galera.MariaDB.yaml
 
 load-sql:
-	. ./load-secrets.sh && kubectl exec -it mariadb-galera-1 -- mariadb -uroot -p"$$SECRET" < personas.sql
+	. ./load-secrets.sh && kubectl exec -it mariadb-galera-2 -- mariadb -uroot -p"$$SECRET" < personas.sql
 
 query-sql:
 	. ./load-secrets.sh && kubectl exec -it mariadb-galera-0 -- mariadb -uroot -p"$$SECRET" -e "select * from persona_db.personas"
+	. ./load-secrets.sh && kubectl exec -it mariadb-galera-0 -- mariadb -uroot -p"$$SECRET" -e "select count(*) from persona_db.personas"
+	. ./load-secrets.sh && kubectl exec -it mariadb-galera-1 -- mariadb -uroot -p"$$SECRET" -e "select count(*) from persona_db.personas"
+	. ./load-secrets.sh && kubectl exec -it mariadb-galera-2 -- mariadb -uroot -p"$$SECRET" -e "select count(*) from persona_db.personas"
 
 delete:
 	kubectl delete -f mariadb-galera.MariaDB.yaml
