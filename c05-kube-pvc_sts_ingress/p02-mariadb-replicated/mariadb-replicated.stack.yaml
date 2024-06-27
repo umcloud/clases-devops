@@ -1,10 +1,11 @@
-# ConfigMap holding information about configuration files for primary/secondary and dockerinit
+# ConfigMap holding information about configuration files for primary/secondary
+# and dockerinit
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mariadb-configmap
 data:
-
   primary.cnf: |
     [mariadb]
     log-bin                         # enable binary logging
@@ -34,7 +35,7 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-    name: mariadb-secret
+  name: mariadb-secret
 type: Opaque
 data:
   mariadb-root-password: c2VjcmV0 # echo -n 'secret'|base64
@@ -83,13 +84,13 @@ spec:
           set -ex
           rm -rf /var/lib/mysql/lost+found
           echo 'Starting init-mariadb';
-          # Check config map to directory that already exists 
+          # Check config map to directory that already exists
           # (but must be used as a volume for main container)
           ls /mnt/config-map
           # Statefulset has sticky identity, number should be last
           [[ `hostname` =~ -([0-9]+)$ ]] || exit 1
           ordinal=${BASH_REMATCH[1]}
-          # Copy appropriate conf.d files from config-map to 
+          # Copy appropriate conf.d files from config-map to
           # mariadb-config volume (emptyDir) depending on pod number
           if [[ $ordinal -eq 0 ]]; then
             # This file holds SQL for connecting to primary
@@ -144,7 +145,6 @@ spec:
       - name: mariadb-config-map
         configMap:
           name: mariadb-configmap
-          #defaultMode: 0544
       - name: mariadb-config
         emptyDir: {}
       - name: initdb

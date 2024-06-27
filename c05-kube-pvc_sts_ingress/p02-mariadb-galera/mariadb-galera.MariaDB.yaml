@@ -1,0 +1,22 @@
+# NOTE: this needs mariadb-operator to be installed in the cluster
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: MariaDB
+metadata:
+  name: mariadb-galera
+spec:
+  rootPasswordSecretKeyRef:
+    generate: true
+    name: mariadb
+    key: root-password
+
+  storage:
+    size: 1Gi
+
+  replicas: 3
+
+  galera:
+    enabled: true
+
+  service:
+    type: ClusterIP
