@@ -1,5 +1,5 @@
+SHELL=/bin/bash
 help:
-	@echo "make help"
 	@echo "make apply"
 	@echo "make load-sql"
 	@echo "make query-sql"
@@ -14,9 +14,7 @@ load-sql:
 
 query-sql:
 	. ./load-secrets.sh && kubectl exec -it mariadb-galera-0 -- mariadb -uroot -p"$$SECRET" -e "select * from persona_db.personas"
-	. ./load-secrets.sh && kubectl exec -it mariadb-galera-0 -- mariadb -uroot -p"$$SECRET" -e "select count(*) from persona_db.personas"
-	. ./load-secrets.sh && kubectl exec -it mariadb-galera-1 -- mariadb -uroot -p"$$SECRET" -e "select count(*) from persona_db.personas"
-	. ./load-secrets.sh && kubectl exec -it mariadb-galera-2 -- mariadb -uroot -p"$$SECRET" -e "select count(*) from persona_db.personas"
+	. ./load-secrets.sh && for i in mariadb-galera-{0..2}; do echo ===$$i===; kubectl exec -it $$i -- mariadb -uroot -p"$$SECRET" -e "select count(*) from persona_db.personas"; done
 
 delete:
 	kubectl delete -f mariadb-galera.MariaDB.yaml
