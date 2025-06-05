@@ -12,8 +12,8 @@ data "openstack_images_image_v2" "ubuntu_2204" {
   most_recent = true
 }
 
-data "openstack_images_image_v2" "srv_mysql_ubuntu1804" {
-  name        = "srv-mysql-ubuntu1804"
+data "openstack_images_image_v2" "srv_postgresql_ubuntu2404" {
+  name        = "srv-postgresql-ubuntu2404"
   most_recent = true
 }
 
@@ -22,7 +22,8 @@ data "openstack_images_image_v2" "srv_nginx_ubuntu1804" {
   most_recent = true
 }
 
-data "openstack_images_image_v2" "srv_wordpress_ubuntu1804" {
-  name        = "srv-wordpress-ubuntu1804"
+# Replaced WordPress with n8n
+data "openstack_images_image_v2" "srv_n8n_ubuntu2404" {
+  name        = "srv-n8n-ubuntu2404"
   most_recent = true
 }

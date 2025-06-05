@@ -58,8 +58,8 @@ resource "openstack_compute_secgroup_v2" "tf_sg_app" {
   }
   rule {
     from_group_id = openstack_compute_secgroup_v2.tf_sg_fe.id
-    from_port     = 80
-    to_port       = 80
+    from_port     = 5678
+    to_port       = 5678
     ip_protocol   = "tcp"
   }
 }
@@ -82,8 +82,8 @@ resource "openstack_compute_secgroup_v2" "tf_sg_db" {
   }
   rule {
     from_group_id = openstack_compute_secgroup_v2.tf_sg_app.id
-    from_port     = 3306
-    to_port       = 3306
+    from_port     = 5432
+    to_port       = 5432
     ip_protocol   = "tcp"
   }
 }
