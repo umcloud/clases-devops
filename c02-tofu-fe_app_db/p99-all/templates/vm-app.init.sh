@@ -31,7 +31,8 @@ cat > /etc/n8n/n8n.env << EOF
 N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
 N8N_SECURE_COOKIE=false
 N8N_HOST="$(ip r g 1.1.1.1 | grep -oP 'src \K[\d.]+')"
-WEBHOOK_URL=http://${fe_fip}/
+# Transform 192.168.x.y -> https://192-168-x-y.int.cloud.um.edu.ar/
+WEBHOOK_URL="https://$(echo ${fe_fip} | sed 's/\./-/g').int.cloud.um.edu.ar/"
 
 # Database Configuration
 DB_TYPE=postgresdb
