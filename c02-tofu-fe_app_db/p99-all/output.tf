@@ -11,5 +11,5 @@ output "tf_fe_ip" {
 }
 
 output "site_url" {
-  value = "http://${openstack_networking_floatingip_v2.tf_fe_fip.address}/"
+  value = "https://${replace(openstack_networking_floatingip_v2.tf_fe_fip.address, ".", "-")}.int.cloud.um.edu.ar/"
 }
