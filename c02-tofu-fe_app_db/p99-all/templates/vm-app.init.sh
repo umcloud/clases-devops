@@ -31,6 +31,8 @@ cat > /etc/n8n/n8n.env << EOF
 N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
 N8N_SECURE_COOKIE=false
 N8N_HOST="$(ip r g 1.1.1.1 | grep -oP 'src \K[\d.]+')"
+# Need same encryption key to be able to restore a DB backup and use credentials
+N8N_ENCRYPTION_KEY="${n8n_encryption_key}"
 # Transform 192.168.x.y -> https://192-168-x-y.int.cloud.um.edu.ar/
 WEBHOOK_URL="${fe_url}"
 
@@ -40,7 +42,7 @@ DB_POSTGRESDB_USER=n8n
 DB_POSTGRESDB_DATABASE=n8n
 DB_POSTGRESDB_HOST=${db_ip}
 DB_POSTGRESDB_PORT=5432
-DB_POSTGRESDB_PASSWORD=nochon
+DB_POSTGRESDB_PASSWORD="${pg_n8n_password}"
 EOF
 chown root:n8n /etc/n8n/n8n.env
 chmod 640 /etc/n8n/n8n.env
