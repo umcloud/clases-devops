@@ -7,10 +7,10 @@ resource "openstack_compute_instance_v2" "tf_app" {
   availability_zone = "nodos-amd-2022"
 
   user_data = templatefile("${path.module}/templates/vm-app.init.sh", {
-    db_ip  = openstack_compute_instance_v2.tf_db.network.0.fixed_ip_v4
-    fe_fip = openstack_networking_floatingip_v2.tf_fe_fip.address
-    fe_url = "https://${replace(openstack_networking_floatingip_v2.tf_fe_fip.address, ".", "-")}.int.cloud.um.edu.ar/"
-    pg_n8n_password = var.pg_n8n_password
+    db_ip              = openstack_compute_instance_v2.tf_db.network.0.fixed_ip_v4
+    fe_fip             = openstack_networking_floatingip_v2.tf_fe_fip.address
+    fe_url             = "https://${replace(openstack_networking_floatingip_v2.tf_fe_fip.address, ".", "-")}.int.cloud.um.edu.ar/"
+    pg_n8n_password    = var.pg_n8n_password
     n8n_encryption_key = var.n8n_encryption_key
   })
 

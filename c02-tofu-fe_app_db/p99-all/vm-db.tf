@@ -8,7 +8,7 @@ resource "openstack_compute_instance_v2" "tf_db" {
 
   user_data = templatefile("${path.module}/templates/vm-db.init.sh", {
     pg_postgres_password = var.pg_postgres_password
-    pg_n8n_password = var.pg_n8n_password
+    pg_n8n_password      = var.pg_n8n_password
   })
 
   network {

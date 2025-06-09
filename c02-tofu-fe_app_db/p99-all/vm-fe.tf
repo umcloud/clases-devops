@@ -20,7 +20,7 @@ resource "openstack_compute_instance_v2" "tf_fe" {
 }
 
 data "openstack_networking_port_v2" "tf_fe_port" {
-  device_id = openstack_compute_instance_v2.tf_fe.id
+  device_id  = openstack_compute_instance_v2.tf_fe.id
   network_id = openstack_compute_instance_v2.tf_fe.network.0.uuid
 }
 

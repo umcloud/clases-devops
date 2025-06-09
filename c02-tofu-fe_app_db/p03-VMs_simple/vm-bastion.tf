@@ -16,7 +16,7 @@ resource "openstack_compute_instance_v2" "tf_bastion" {
 }
 
 data "openstack_networking_port_v2" "tf_bastion_port" {
-  device_id = openstack_compute_instance_v2.tf_bastion.id
+  device_id  = openstack_compute_instance_v2.tf_bastion.id
   network_id = openstack_compute_instance_v2.tf_bastion.network.0.uuid
 }
 

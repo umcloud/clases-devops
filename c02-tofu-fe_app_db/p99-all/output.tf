@@ -24,7 +24,7 @@ output "tf_IPs" {
 
 output "db_data" {
   value = {
-    backup_cmd = "./db-backup.sh ${local.tf_bastion_fip} ${local.tf_db_ip} ${local.tf_app_ip} /tmp/db.dump"
+    backup_cmd  = "./db-backup.sh ${local.tf_bastion_fip} ${local.tf_db_ip} ${local.tf_app_ip} /tmp/db.dump"
     restore_cmd = "./db-restore.sh ${local.tf_bastion_fip} ${local.tf_db_ip} ${local.tf_app_ip} /tmp/db.dump"
   }
 }
