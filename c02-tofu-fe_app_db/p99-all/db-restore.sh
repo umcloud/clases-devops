@@ -11,7 +11,7 @@ BACKUP_FILE=${4:?missing }
 
 set -xeu
 echo "Restoring database from ${BACKUP_FILE}..."
-ssh -o StrictHostKeyChecking=no -CA "ubuntu@${BASTION_IP}" "ssh -o StrictHostKeyChecking=no -C ${APP_IP} sudo sh -xc \'${APP_STOP_CMD}\'"
-ssh -o StrictHostKeyChecking=no -CA "ubuntu@${BASTION_IP}" "ssh -o StrictHostKeyChecking=no -C ${DB_IP} sudo -upostgres sh -xc \'${RESTORE_CMD}\'" < "${BACKUP_FILE}"
-ssh -o StrictHostKeyChecking=no -CA "ubuntu@${BASTION_IP}" "ssh -o StrictHostKeyChecking=no -C ${APP_IP} sudo sh -xc \'${APP_START_CMD}\'"
+ssh -o StrictHostKeyChecking=no -C -J "ubuntu@${BASTION_IP}" "ubuntu@${APP_IP}" sudo sh -xc "'${APP_STOP_CMD}'"
+ssh -o StrictHostKeyChecking=no -C -J "ubuntu@${BASTION_IP}" "ubuntu@${DB_IP}"  sudo -upostgres sh -xc "'${RESTORE_CMD}'" < "${BACKUP_FILE}"
+ssh -o StrictHostKeyChecking=no -C -J "ubuntu@${BASTION_IP}" "ubuntu@${APP_IP}" sudo sh -xc "'${APP_START_CMD}'"
 echo "Restore completed successfully from ${BACKUP_FILE}"

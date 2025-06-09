@@ -7,13 +7,6 @@ locals {
   tf_db_ip       = openstack_compute_instance_v2.tf_db.network.0.fixed_ip_v4
 }
 
-output "db_data" {
-  value = {
-    backup_cmd  = "./db-backup.sh ${local.tf_bastion_fip} ${local.tf_db_ip} ${local.tf_app_ip} /tmp/db.dump"
-    restore_cmd = "./db-restore.sh ${local.tf_bastion_fip} ${local.tf_db_ip} ${local.tf_app_ip} /tmp/db.dump"
-  }
-}
-
 output "ssh" {
   value = {
     app = "ssh -o StrictHostKeyChecking=no -J ubuntu@${local.tf_bastion_fip} ubuntu@${local.tf_app_ip}"
@@ -34,11 +27,5 @@ output "tf_IPs" {
     app_ip = local.tf_app_ip
     db_ip  = local.tf_db_ip
     fe_ip  = local.tf_fe_ip
-  }
-}
-
-output "urls" {
-  value = {
-    site_url = local.tf_site_url
   }
 }
