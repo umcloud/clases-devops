@@ -1,5 +1,5 @@
 data "openstack_images_image_v2" "docker" {
-  name        = "srv-docker-ubuntu2204"
+  name        = "srv-docker-ubuntu2404"
   most_recent = true
 }
 
