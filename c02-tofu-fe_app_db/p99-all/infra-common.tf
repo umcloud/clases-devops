@@ -7,8 +7,8 @@ data "openstack_compute_flavor_v2" "small" {
   ram   = 2048
 }
 
-data "openstack_images_image_v2" "ubuntu_2204" {
-  name        = "ubuntu_2204"
+data "openstack_images_image_v2" "ubuntu_2404" {
+  name        = "ubuntu_2404"
   most_recent = true
 }
 
