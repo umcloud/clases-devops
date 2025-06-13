@@ -17,8 +17,8 @@ data "openstack_images_image_v2" "srv_postgresql_ubuntu2404" {
   most_recent = true
 }
 
-data "openstack_images_image_v2" "srv_nginx_ubuntu1804" {
-  name        = "srv-nginx-ubuntu1804"
+data "openstack_images_image_v2" "srv_nginx_ubuntu2404" {
+  name        = "srv-nginx-ubuntu2404"
   most_recent = true
 }
 
