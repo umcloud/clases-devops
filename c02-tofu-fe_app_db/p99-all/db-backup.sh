@@ -7,7 +7,7 @@ APP_START_CMD="sudo systemctl start n8n"
 BASTION_IP=${1:?missing bastion_ip}
 DB_IP=${2:?missing db_ip}
 APP_IP=${3:?missing app_ip}
-BACKUP_FILE=${4:?missing backup_file}
+BACKUP_FILE=${4:?missing backup_file, e.g. db_backup.sql}
 
 set -xeu
 echo "Backing up database to ${BACKUP_FILE}..."

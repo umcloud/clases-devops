@@ -2,6 +2,11 @@ data "openstack_networking_network_v2" "ext_net" {
   name = "ext_net"
 }
 
+data "openstack_compute_flavor_v2" "xsmall" {
+  vcpus = 1
+  ram   = 1024
+}
+
 data "openstack_compute_flavor_v2" "small" {
   vcpus = 1
   ram   = 2048

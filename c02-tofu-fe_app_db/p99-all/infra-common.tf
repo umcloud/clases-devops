@@ -7,6 +7,11 @@ data "openstack_compute_flavor_v2" "small" {
   ram   = 2048
 }
 
+data "openstack_compute_flavor_v2" "xsmall" {
+  vcpus = 1
+  ram   = 1024
+}
+
 data "openstack_images_image_v2" "ubuntu_2404" {
   name        = "ubuntu_2404"
   most_recent = true
