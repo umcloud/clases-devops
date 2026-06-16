@@ -27,7 +27,7 @@ def authenticate():
     resp = jsonify(message)
 
     resp.status_code = 401
-    resp.headers['WWW-Authenticate'] = 'Basic realm="shaas-jobs"'
+    resp.headers['WWW-Authenticate'] = 'Basic realm="validate-email"'
 
     return resp
 
@@ -90,6 +90,8 @@ def verify_email(email, mode=0):
 
     email = str(email)
     mode = int(mode)
+    if mode == 2:
+        mode = 1
 
     if mode not in [0, 1, 2]:
         mode = 2

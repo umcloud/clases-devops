@@ -1,23 +1,22 @@
-FROM alpine:3.7
+FROM alpine
 
-LABEL mantainer="cloud@um.edu.ar"
+LABEL mantainer="diego.navarro@um.edu.ar"
 
-ENV TERM xterm
+ENV TERM=xterm
 
 RUN apk update
-RUN apk add python py2-pip uwsgi uwsgi-python ca-certificates
+RUN apk add python3 uwsgi uwsgi-python py3-pip
 
-RUN mkdir /opt
-RUN mkdir /opt/validate-email
+RUN mkdir /opt/app
 
-WORKDIR /opt/validate-email
-COPY src/ /opt/validate-email
+WORKDIR /opt/app
+COPY src/ /opt/app
 
-RUN pip install --trusted-host pypi.python.org --upgrade pip
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
+RUN pip3 install --upgrade pip  --break-system-packages
+RUN pip3 install -r requirements.txt --break-system-packages
 
-USER 1000:1000
+#USER 1000:1000
 
-CMD uwsgi --ini /opt/validate-email/validate-email.ini
+CMD uwsgi --ini /opt/app/app.ini
 
 EXPOSE 5000

@@ -10,13 +10,17 @@ import datetime
 import sys
 import os
 
-#App
+if 'API_KEY' not in os.environ:
+    print('ERROR: API_KEY environment variable is not set', file=sys.stderr)
+    sys.exit(1)
+
 app = Flask(__name__)
 CORS(app)
 
+
 #Autentication
 def check_auth(username, password):
-    if username == os.environ["API_KEY"]:
+    if username == os.environ['API_KEY']:
         return 1
     else:
         return 0
@@ -26,7 +30,7 @@ def authenticate():
     resp = jsonify(message)
 
     resp.status_code = 401
-    resp.headers['WWW-Authenticate'] = 'Basic realm="shaas-jobs"'
+    resp.headers['WWW-Authenticate'] = 'Basic realm="validate-email"'
 
     return resp
 
@@ -89,6 +93,8 @@ def verify_email(email, mode=0):
 
     email = str(email)
     mode = int(mode)
+    if mode == 2:
+        mode = 1
 
     if mode not in [0, 1, 2]:
         mode = 2
