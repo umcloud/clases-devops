@@ -5,7 +5,7 @@ data "openstack_images_image_v2" "kube_tools" {
 
 data "openstack_compute_flavor_v2" "small" {
   vcpus = 1
-  ram   = 2048
+  ram   = 1024
 }
 
 resource "openstack_compute_instance_v2" "kube_vm" {
