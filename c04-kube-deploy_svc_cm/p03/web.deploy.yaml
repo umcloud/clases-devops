@@ -18,11 +18,11 @@ spec:
         app: web
     spec:
       containers:
-      - image: bitnami/nginx:1.24.0
+      - image: nginxinc/nginx-unprivileged:1.30.3
         name: nginx
         resources: {}
         volumeMounts:
-        - mountPath: /opt/bitnami/nginx/html
+        - mountPath: /usr/share/nginx/html
           name: assets-vol
       volumes:
       - configMap:

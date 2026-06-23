@@ -18,7 +18,7 @@ spec:
         app: web
     spec:
       containers:
-      - image: bitnami/nginx:1.24.0
+      - image: nginxinc/nginx-unprivileged:1.31.3
         name: nginx
         resources: {}
 status: {}
