@@ -30,7 +30,7 @@ spec:
     spec:
       initContainers:
       - name: "remove-lost-found"
-        image: "busybox:1.25.0"
+        image: "busybox"
         imagePullPolicy: "IfNotPresent"
         command:  ["rm", "-fr", "/var/lib/mysql/lost+found"]
         volumeMounts:
